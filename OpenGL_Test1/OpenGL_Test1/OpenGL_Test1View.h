@@ -1,10 +1,11 @@
 ﻿
 // OpenGL_Test1View.h: COpenGLTest1View 클래스의 인터페이스
-//
+
 #include<gl/gl.H>
 #include<gl/glu.H>
 #include<gl/glut.h>
 #include<gl/glaux.H>
+
 
 #pragma comment(lib, "OPENGL32.LIB")
 #pragma comment(lib, "GLAUX.LIB")
@@ -26,6 +27,14 @@ public:
 
 // 작업입니다.
 public:
+	HDC		m_hDC;
+	HGLRC	m_hglRC;
+
+public:
+	BOOL SetDevicePixelFormat(HDC hdc);
+	void InitGL(void);
+	void ResizeGLScene(GLsizei width, GLsizei height);
+	void DrawGLScene(void);
 
 // 재정의입니다.
 public:
@@ -52,6 +61,10 @@ protected:
 	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	afx_msg void OnDestroy();
+	afx_msg void OnSize(UINT nType, int cx, int cy);
 };
 
 #ifndef _DEBUG  // OpenGL_Test1View.cpp의 디버그 버전

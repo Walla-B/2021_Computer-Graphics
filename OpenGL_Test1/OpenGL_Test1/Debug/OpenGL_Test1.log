@@ -1,1 +1,17 @@
-﻿  OpenGL_Test1.vcxproj -> C:\Users\dev\Desktop\GPGPU_CUDA\OpenGL_Test1\Debug\OpenGL_Test1.exe
+﻿  pch.cpp
+  ClassView.cpp
+  FileView.cpp
+  MainFrm.cpp
+  OpenGL_Test1.cpp
+  OpenGL_Test1Doc.cpp
+  OpenGL_Test1View.cpp
+C:\Users\dev\Desktop\2021_Computer-Graphics\OpenGL_Test1\OpenGL_Test1\OpenGL_Test1View.cpp(264,30): warning C4305: '인수': 'double'에서 'GLfloat'(으)로 잘립니다.
+C:\Users\dev\Desktop\2021_Computer-Graphics\OpenGL_Test1\OpenGL_Test1\OpenGL_Test1View.cpp(265,26): warning C4305: '인수': 'double'에서 'GLfloat'(으)로 잘립니다.
+C:\Users\dev\Desktop\2021_Computer-Graphics\OpenGL_Test1\OpenGL_Test1\OpenGL_Test1View.cpp(268,27): warning C4305: '인수': 'double'에서 'GLfloat'(으)로 잘립니다.
+C:\Users\dev\Desktop\2021_Computer-Graphics\OpenGL_Test1\OpenGL_Test1\OpenGL_Test1View.cpp(271,27): warning C4305: '인수': 'double'에서 'GLfloat'(으)로 잘립니다.
+C:\Users\dev\Desktop\2021_Computer-Graphics\OpenGL_Test1\OpenGL_Test1\OpenGL_Test1View.cpp(274,27): warning C4305: '인수': 'double'에서 'GLfloat'(으)로 잘립니다.
+  OutputWnd.cpp
+  PropertiesWnd.cpp
+  ViewTree.cpp
+  코드를 생성하고 있습니다...
+  OpenGL_Test1.vcxproj -> C:\Users\dev\Desktop\2021_Computer-Graphics\OpenGL_Test1\Debug\OpenGL_Test1.exe
