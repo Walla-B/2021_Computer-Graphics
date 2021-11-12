@@ -1,6 +1,7 @@
-﻿#define M_PI_2 1.57079632679489661923
+﻿
 // CGAssignment1View.cpp: CCGAssignment1View 클래스의 구현
 //
+
 #include "pch.h"
 #include "framework.h"
 // SHARED_HANDLERS는 미리 보기, 축소판 그림 및 검색 필터 처리기를 구현하는 ATL 프로젝트에서 정의할 수 있으며
@@ -8,7 +9,7 @@
 #ifndef SHARED_HANDLERS
 #include "CGAssignment1.h"
 #endif
-#include "math.h"
+
 #include "CGAssignment1Doc.h"
 #include "CGAssignment1View.h"
 
@@ -31,12 +32,6 @@ BEGIN_MESSAGE_MAP(CCGAssignment1View, CView)
 	ON_WM_CREATE()
 	ON_WM_DESTROY()
 	ON_WM_SIZE()
-	ON_WM_MOUSEMOVE()
-	ON_WM_RBUTTONDOWN()
-	ON_WM_LBUTTONUP()
-	ON_WM_LBUTTONDOWN()
-	ON_WM_KEYDOWN()
-	ON_WM_KEYUP()
 END_MESSAGE_MAP()
 
 // CCGAssignment1View 생성/소멸
@@ -70,7 +65,6 @@ void CCGAssignment1View::OnDraw(CDC* /*pDC*/)
 
 	// TODO: 여기에 원시 데이터에 대한 그리기 코드를 추가합니다.
 	DrawGLScene();
-	Invalidate(FALSE);
 }
 
 
@@ -100,6 +94,11 @@ void CCGAssignment1View::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
 	// TODO: 인쇄 후 정리 작업을 추가합니다.
 }
 
+void CCGAssignment1View::OnRButtonUp(UINT /* nFlags */, CPoint point)
+{
+	ClientToScreen(&point);
+	OnContextMenu(this, point);
+}
 
 void CCGAssignment1View::OnContextMenu(CWnd* /* pWnd */, CPoint point)
 {
@@ -209,17 +208,6 @@ void CCGAssignment1View::InitGL(GLvoid) {
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-	
-	m_cameramode = 1;
-	m_mouseMove = FALSE;
-	m_camera_x = m_camera_y = 0.0;
-	m_camera_z = 30.0;
-
-	m_lookat_x = m_lookat_y = m_lookat_z = 0.0;
-	m_planeCoord_x = m_planeCoord_y = m_planeCoord_z = 0.0;
-	m_pitch = m_yaw = 0;
-	m_speed = 0;
-
 }
 
 
@@ -249,146 +237,14 @@ void CCGAssignment1View::DrawGLScene(void) {
 	// clear screen and depth buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
-
-	// Set Camera properties by camera mode
-	if (m_cameramode == 1) { // If cameramode is 1, just track plane at stationary point
-		
-		m_lookat_x = m_planeCoord_x;
-		m_lookat_y = m_planeCoord_y;
-		m_lookat_z = m_planeCoord_z;
-	}
-	else if (m_cameramode == 2) {	// If cameramode is 2, track & follow plane
-		m_lookat_x = m_planeCoord_x;
-		m_lookat_y = m_planeCoord_y;
-		m_lookat_z = m_planeCoord_z;
-		
-		m_camera_x = m_planeCoord_x;
-		m_camera_y = m_planeCoord_y - 20;
-		m_camera_z = m_planeCoord_z + 5;
-	}
-
-	gluLookAt(m_camera_x, m_camera_y, m_camera_z, m_lookat_x, m_lookat_y, m_lookat_z, 0.f, 1.f, 0.f);
-
-	GLdouble angleX, angleY;
 	
-	// if mouse is moving, rotate everything with its position
-	if (m_mouseMove) {
-		angleX = 1 * (m_mouseCurrentPoint.x - m_mouseAnchorPoint.x);
-		angleY = 1 * (m_mouseCurrentPoint.y - m_mouseAnchorPoint.y);
-		glRotatef(angleX, 0, 1, 0);
-		glRotatef(angleY, 1, 0, 0);
-	}
-
-	// yaw and pitch with speed variable changing plane's position
-	m_planeCoord_x = m_planeCoord_x + 0.1 * m_speed * -m_yaw;
-	m_planeCoord_y = m_planeCoord_y + m_speed;
-	m_planeCoord_z = m_planeCoord_z + 0.1 * m_speed * m_pitch;
-
-	// Draw stars and Plane
-	m_B913038.DrawStars();
-	m_B913038.DrawPlane(m_planeCoord_x,m_planeCoord_y,m_planeCoord_z,m_pitch,m_yaw);
-
+	// camera position
+	gluLookAt(3.0f, 3.0f, 6.0f, 0.f, 0.f, 0.f, 0.f, 1.f, 0.f);
+	
+	// draw
+	m_B913038.drawCube();
+	
 	// swap buffer
 	SwapBuffers(m_hDC);
 }
 
-
-void CCGAssignment1View::OnLButtonDown(UINT nFlags, CPoint point) {
-	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-	m_mouseMove = TRUE;
-	m_mouseAnchorPoint = point;
-
-	CView::OnLButtonDown(nFlags, point);
-}
-
-void CCGAssignment1View::OnLButtonUp(UINT nFlags, CPoint point) {
-	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-	m_mouseMove = FALSE;
-
-	CView::OnLButtonUp(nFlags, point);
-}
-
-void CCGAssignment1View::OnRButtonDown(UINT nFlags, CPoint point) {
-	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-
-	CView::OnRButtonDown(nFlags, point);
-}
-
-void CCGAssignment1View::OnRButtonUp(UINT /* nFlags */, CPoint point)
-{
-	ClientToScreen(&point);
-	OnContextMenu(this, point);
-}
-
-void CCGAssignment1View::OnMouseMove(UINT nFlags, CPoint point) {
-	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-	m_mouseCurrentPoint = point;
-	CView::OnMouseMove(nFlags, point);
-}
-
-
-void CCGAssignment1View::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
-	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-	switch (nChar) {
-	case VK_LEFT:							//Arrow Keys modify m_camera_x and m_camera_y values only at cameramode 1
-		if (m_cameramode == 1) {
-			m_camera_x -= 1;
-		}
-		break;
-	case VK_RIGHT:
-		if (m_cameramode == 1) {
-			m_camera_x += 1;
-		}
-		break;
-	case VK_UP:
-		if (m_cameramode == 1) {
-			m_camera_y += 1;
-		}
-		break;
-	case VK_DOWN:
-		if (m_cameramode == 1) {
-			m_camera_y -= 1;
-		}
-		break;
-	case 0x31:			//Keyboard 1
-	case VK_NUMPAD1:	//Numpad 1	
-		m_cameramode = 1;					// Change camera mode
-		m_camera_x = m_camera_y = 0.0;		// Move camera to default position when '1' key is pressed.
-		m_camera_z = 30.0;
-		break;
-	case 0x32:			//Keyboard 2
-	case VK_NUMPAD2:	//Numpad 2
-		m_cameramode = 2;					// Change camera mode
-		break;
-	case VK_ADD:
-		m_speed += 0.001;					// Accelerate
-		break;
-	case VK_SUBTRACT:			
-		if (m_speed > 0.0) {				// Decelerate but only when speed is above zero
-			m_speed -= 0.001;
-		}
-		else
-			m_speed = 0.0;
-		break;
-	case 0x57:	//W
-		m_pitch += 5;						// Controlls pitch and yaw variables
-		break;
-	case 0x41:	//A
-		m_yaw += 5;
-		break;
-	case 0x53:	//S
-		m_pitch -= 5;
-		break;
-	case 0x44:  //D
-		m_yaw -= 5;
-		break;
-	}
-	CView::OnKeyDown(nChar, nRepCnt, nFlags);
-}
-
-
-void CCGAssignment1View::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
-	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-
-	CView::OnKeyUp(nChar, nRepCnt, nFlags);
-}

@@ -30,23 +30,6 @@ public:
 public:
 	HDC		m_hDC;		// GDI Device Context
 	HGLRC	m_hglRC;	// Rendering context
-	
-	// Mouse Input Properties
-	BOOL m_mouseMove;
-	CPoint m_mouseAnchorPoint;
-	CPoint m_mouseCurrentPoint;
-	
-	// Variable for camera modes
-	INT m_cameramode;
-
-	// Camera Properties
-	GLfloat m_camera_x, m_camera_y, m_camera_z;
-	GLfloat m_lookat_x, m_lookat_y, m_lookat_z;
-
-	// Plane Properties
-	GLfloat m_yaw, m_pitch, m_speed;
-	GLfloat m_planeCoord_x, m_planeCoord_y, m_planeCoord_z;
-
 	B913038 m_B913038;	// 학번 Class
 
 public:
@@ -84,12 +67,6 @@ public:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnDestroy();
 	afx_msg void OnSize(UINT nType, int cx, int cy);
-	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
-	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
-	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
-	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
-	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
-	afx_msg void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
 };
 
 #ifndef _DEBUG  // CGAssignment1View.cpp의 디버그 버전
